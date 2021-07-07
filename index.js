@@ -1,9 +1,20 @@
-const express = require('express')
-const app = express()
+var express = require('express');
+
+var app = express();
+
 const port = 3300
 
+app.use(express.json());
+
+let data = {};
 app.get('/', (req, res) => {
-    res.send('<h1>Hello World! Node App</h1>')
+    res.send(data)
+})
+
+app.post('/notification', (req, res) => {
+    console.log(req.body);
+    data = req.body;
+    res.send('Post: Hello World! Node App')
 })
 
 app.listen(port, () => {
