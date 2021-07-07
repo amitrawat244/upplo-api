@@ -6,17 +6,22 @@ const port = 3300
 
 app.use(express.json());
 
-let cache = '';
+let changeddate = 0;
 app.get('/', (req, res) => {
     console.log("GET");
-    const date = cache ? Date(cache) : '';
-    res.send(`File Changed: ${date}`)
+    res.send(`File Changed: ${changeddate}`)
+})
+
+app.get('/clear', (req, res) => {
+    console.log("GET");
+    changeddate = 0;
+    res.send(`File Changed: ${changeddate}`)
 })
 
 app.post('/notification', (req, res) => {
     console.log(req.body);
     data = req.body;
-    cache = Date.now();
+    changeddate = Date(Date.now());
     res.send('ok')
 })
 
