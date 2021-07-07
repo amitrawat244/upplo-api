@@ -8,6 +8,7 @@ app.use(express.json());
 
 let data = {};
 app.get('/', (req, res) => {
+    console.log("GET");
     res.send(data)
 })
 
