@@ -6,16 +6,18 @@ const port = 3300
 
 app.use(express.json());
 
-let data = {};
+let cache = '';
 app.get('/', (req, res) => {
     console.log("GET");
-    res.send(data)
+    const date = cache ? Date(cache) : '';
+    res.send(`File Changed: ${date}`)
 })
 
 app.post('/notification', (req, res) => {
     console.log(req.body);
     data = req.body;
-    res.send('Post: Hello World! Node App')
+    cache = Date.now();
+    res.send('ok')
 })
 
 app.listen(port, () => {
