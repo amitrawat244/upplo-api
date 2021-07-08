@@ -27,7 +27,7 @@ export const fileQueue = async (data) => {
         const waitingJobs = await myQueue.getWaiting();
         console.log('---Waiting Jobs---')
         console.log(waitingJobs);
-        if (waitingJobs.find(job => job.fileId === data.fileId)) {
+        if (waitingJobs.find(job => job.data.fileId === data.fileId)) {
             resolve('Job already added');
         }
         await myQueue.add('myqueue', data);
