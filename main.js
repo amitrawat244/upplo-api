@@ -38,8 +38,10 @@ app.post('/notification', async (req, res) => {
         return;
     }
     console.log('Adding job...');
-    const result = fileQueue({ fileId });
-    console.log(result);
+    fileQueue({ fileId }).then((result) => {
+        console.log(result);
+    });
+
     headers = req.headers;
     changeddate = Date(Date.now());
     res.send('ok')

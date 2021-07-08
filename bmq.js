@@ -1,17 +1,24 @@
 import { Queue, Worker } from 'bullmq';
 
 
-const QUEUE_NAME = "FILE_QUEUE";
-const JOB_NAME = "FILE_JOB";
+const QUEUE_NAME = "FILE_QUEUE_1";
+const JOB_NAME = "FILE_JOB_1";
 const queueFile = new Queue(QUEUE_NAME);
 
 export const fileQueue = async (data) => {
-    const waitingJobs = await queueFile.getWaiting();
-    if (waitingJobs.find(job => job.fileId === data.fileId)) {
-        return 'Job already added';
-    }
-    await queueFile.add(JOB_NAME, data);
-    return 'Job added';
+    return Promise((resolve, reject) => {
+        console.log('0');
+        const waitingJobs = await queueFile.getWaiting();
+        console.log('1');
+        if (waitingJobs.find(job => job.fileId === data.fileId)) {
+            resolve('Job already added');
+        }
+        console.log('2');
+        await queueFile.add(JOB_NAME, data);
+        console.log('3');
+        resolve('Job added');
+    })
+
 }
 
 
