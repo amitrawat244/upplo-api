@@ -1,6 +1,6 @@
 import express from 'express';
 import util from 'util';
-import { fileQueue, processQueue } from './mq.js';
+import { fileQueue, processQueue } from './bmq.js';
 
 const app = express();
 
