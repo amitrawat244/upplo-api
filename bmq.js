@@ -1,40 +1,45 @@
 import { Queue, Worker } from 'bullmq';
 
+import IORedis from 'ioredis';
 
-const JOB_NAME = "FILE_JOB_t";
-const queueFile = new Queue(JOB_NAME);
+const connection = new IORedis();
+
+const myQueue = new Queue('myqueue', { connection });
+const myWorker = new Worker('myworker', async (job) => {
+    const { fileId } = job.data;
+    console.log(`TODO Call upplo-cms API to process file ${fileId}`);
+    console.log(`TODO file processed ${fileId}`);
+}, { connection });
+myQueue.pause();
+
+myWorker.on('completed', (job) => {
+    const { fileId } = job.data;
+    console.log(`Job-id:${job.id} has completed! (fileId: ${fileId})`);
+});
+
+myWorker.on('failed', (job, err) => {
+    const { fileId } = job.data;
+    console.log(`${job.id} (fileId: ${fileId}) has failed with ${err.message}`);
+});
 
 export const fileQueue = async (data) => {
     return new Promise(async (resolve, reject) => {
-        console.log('0');
-        const waitingJobs = await queueFile.getWaiting();
-        console.log('1');
+        const waitingJobs = await myQueue.getWaiting();
         if (waitingJobs.find(job => job.fileId === data.fileId)) {
             resolve('Job already added');
         }
-        console.log('2');
-        await queueFile.add(JOB_NAME, data);
-        console.log('3');
+        await myQueue.add(JOB_NAME, data);
         resolve('Job added');
     })
 
 }
 
-
+let timeout;
 export const processQueue = async () => {
     console.log('---Processing Queue---')
-    const worker = new Worker(JOB_NAME, async job => {
-        const { fileId } = job.data;
-        console.log(`TODO Call upplo-cms API to process file ${fileId}`);
-        console.log(`TODO file processed ${fileId}`);
-    });
-    worker.on('completed', (job) => {
-        const { fileId } = job.data;
-        console.log(`Job-id:${job.id} has completed! (fileId: ${fileId})`);
-    });
-
-    worker.on('failed', (job, err) => {
-        const { fileId } = job.data;
-        console.log(`${job.id} (fileId: ${fileId}) has failed with ${err.message}`);
-    });
+    myQueue.resume();
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        myQueue.pause();
+    }, 5000)
 }
