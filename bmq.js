@@ -22,6 +22,7 @@ export const fileQueue = async (data) => {
 
 
 export const processQueue = async () => {
+    console.log('---Processing Queue---')
     const worker = new Worker(JOB_NAME, async job => {
         const { fileId } = job.data;
         console.log(`TODO Call upplo-cms API to process file ${fileId}`);

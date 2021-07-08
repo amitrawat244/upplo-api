@@ -24,7 +24,8 @@ app.get('/clear', (req, res) => {
     res.send(`File Changed: ${changeddate}`)
 })
 
-app.post('/processjob', (req, res) => {
+app.get('/processjob', (req, res) => {
+    console.log('---Process Queue---')
     processQueue();
     res.send('ok')
 })
