@@ -25,7 +25,6 @@ app.get('/clear', (req, res) => {
 })
 
 app.get('/processjob', (req, res) => {
-    console.log('---Process Queue---')
     processQueue();
     res.send('ok')
 })

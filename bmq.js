@@ -38,7 +38,12 @@ export const fileQueue = async (data) => {
 
 let timeout;
 export const processQueue = async () => {
-    console.log('---Processing Queue---')
+    console.log('---Processing Queue---');
+    const waitingJobs = await myQueue.getWaiting();
+    if (!waitingJobs.length) {
+        console.log('---Queue is Empty---');
+        return;
+    }
     myQueue.resume();
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
