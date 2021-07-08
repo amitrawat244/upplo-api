@@ -32,7 +32,7 @@ app.post('/processjob', (req, res) => {
 app.post('/notification', async (req, res) => {
     const fileId = req.headers['x-goog-channel-id'];
     console.log(`channel-id from header -> ${fileId}`);
-    console.log('heeder missing - |x-goog-channel-id|');
+    console.log('header missing - |x-goog-channel-id|');
     if (!fileId) {
         res.send('file not defined');
         return;
