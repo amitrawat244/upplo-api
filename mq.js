@@ -6,6 +6,7 @@ const JOB_NAME = "FILE_JOB";
 const queueFile = new Queue(QUEUE_NAME);
 
 export const fileQueue = async (data) => {
+    console.log(data);
     const waitingJobs = await queueFile.getWaiting();
     if (waitingJobs.find(job => job.fileId === data.fileId)) {
         return 'Job already added';
