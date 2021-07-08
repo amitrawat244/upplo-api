@@ -30,9 +30,15 @@ app.post('/processjob', (req, res) => {
 })
 
 app.post('/notification', async (req, res) => {
-    console.log(`channel-id header ${req.headers['x-goog-channel-id']}`);
+    const fileId = req.headers['x-goog-channel-id'];
+    console.log(`channel-id from header -> ${fileId}`);
+    console.log('heeder missing - |x-goog-channel-id|');
+    if (!fileId) {
+        res.send('file not defined');
+        return;
+    }
     console.log('Adding job...');
-    const result = fileQueue({ fileId: req.headers['x-goog-channel-id'] });
+    const result = fileQueue({ fileId });
     console.log(result);
     headers = req.headers;
     data = req.body;
