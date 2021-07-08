@@ -6,7 +6,7 @@ const JOB_NAME = "FILE_JOB_t";
 const queueFile = new Queue(QUEUE_NAME);
 
 export const fileQueue = async (data) => {
-    return Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         console.log('0');
         const waitingJobs = await queueFile.getWaiting();
         console.log('1');
