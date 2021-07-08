@@ -1,9 +1,8 @@
 import { Queue, Worker } from 'bullmq';
 
 
-const QUEUE_NAME = "FILE_QUEUE_t";
 const JOB_NAME = "FILE_JOB_t";
-const queueFile = new Queue(QUEUE_NAME);
+const queueFile = new Queue(JOB_NAME);
 
 export const fileQueue = async (data) => {
     return new Promise(async (resolve, reject) => {
