@@ -1,5 +1,6 @@
-const express = require('express');
-const util = require('util');
+import express from 'express';
+import util from 'util';
+import { fileQueue, processQueue } from './mq.js';
 
 const app = express();
 
@@ -23,15 +24,16 @@ app.get('/clear', (req, res) => {
     res.send(`File Changed: ${changeddate}`)
 })
 
-app.post('/test', (req, res) => {
-    console.log(req.headers);
-    data = req.body;
-    changeddate = Date(Date.now());
+app.post('/processjob', (req, res) => {
+    processQueue();
     res.send('ok')
 })
 
-app.post('/notification', (req, res) => {
-    console.log(req.headers);
+app.post('/notification', async (req, res) => {
+    console.log(`channel-id header ${req.headers['x-goog-channel-id']}`);
+    console.log('Adding job...');
+    const result = fileQueue({ fileId: req.headers['x-goog-channel-id'] });
+    console.log(result);
     headers = req.headers;
     data = req.body;
     changeddate = Date(Date.now());
