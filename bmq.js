@@ -5,7 +5,7 @@ import IORedis from 'ioredis';
 const connection = new IORedis();
 
 const myQueue = new Queue('myqueue', { connection });
-const myWorker = new Worker('myworker', async (job) => {
+const myWorker = new Worker('myqueue', async (job) => {
     const { fileId } = job.data;
     console.log(`TODO Call upplo-cms API to process file ${fileId}`);
     console.log(`TODO file processed ${fileId}`);
@@ -25,6 +25,8 @@ myWorker.on('failed', (job, err) => {
 export const fileQueue = async (data) => {
     return new Promise(async (resolve, reject) => {
         const waitingJobs = await myQueue.getWaiting();
+        console.log('---Waiting Jobs---')
+        console.log(waitingJobs);
         if (waitingJobs.find(job => job.fileId === data.fileId)) {
             resolve('Job already added');
         }
