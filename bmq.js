@@ -25,8 +25,7 @@ myWorker.on('failed', (job, err) => {
 export const fileQueue = async (data) => {
     return new Promise(async (resolve, reject) => {
         const waitingJobs = await myQueue.getWaiting();
-        console.log('---Waiting Jobs---')
-        console.log(waitingJobs);
+        console.log('---Waiting Jobs count ', waitingJobs.length)
         if (waitingJobs.find(job => job.data.fileId === data.fileId)) {
             resolve('Job already added');
         }
