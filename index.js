@@ -41,7 +41,6 @@ app.post('/notification', async (req, res) => {
     const result = fileQueue({ fileId });
     console.log(result);
     headers = req.headers;
-    data = req.body;
     changeddate = Date(Date.now());
     res.send('ok')
 })
